@@ -57,7 +57,7 @@ const editMenuApi = async (ctx, next) => {
   return next()
 }
 
-//编辑菜单
+//删除菜单
 const delMenuApi = async (ctx, next) => {
   console.log('delMenuApi');
   try{

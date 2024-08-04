@@ -23,9 +23,9 @@ const editMenuService = async ({name,path,id}) => {
   const result=await query(menu.edit({ name,path,id }));
   return result
 }
-// 编辑菜单
+// 删除菜单
 const delMenuService = async (id) => {
-  const result=await query(menu.edit(id));
+  const result=await query(menu.del(id));
   return result
 }
 

@@ -7,11 +7,10 @@ USE orders_db;
 CREATE TABLE menu (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    path VARCHAR(255) DEFAULT NULL,
+    path VARCHAR(255) NOT NULL,
     parent_id INT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (parent_id) REFERENCES menu(id)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO menu (name, path, parent_id)
@@ -23,3 +22,5 @@ VALUES ('主页', '/home', NULL),
        ('特色产品', '/products/featured', 2),
        ('公司介绍', '/about-us/company', 3),
        ('联系方式', '/contact-us/details', 3);
+
+DELETE FROM table_name WHERE id = 10 OR parent_id = 10;
