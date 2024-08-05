@@ -1,6 +1,6 @@
 
 const query =require('../../utils/query');
-const { menu }= require('../../models/admin/system')
+const { menu, auth }= require('../../models/admin/system')
 
 // 获菜单列表
 const getMenuAllService = async () => {
@@ -25,14 +25,27 @@ const editMenuService = async ({name,path,id}) => {
 }
 // 删除菜单
 const delMenuService = async (id) => {
-  try {
-    
-  } catch (error) {
-    
-  }
   const result=await query(menu.del(id));
   return result
 }
+// 添加权限
+const addAuthService = async ({name,code }) => {
+  const result=await query(auth.add({ name,code }));
+  return result
+}
+
+// 获取权限列表总数
+const getAuthCountService = async ({name,code }) => {
+  const result=await query(auth.count({ name,code }));
+  return result
+}
+// 分页获取权限列表
+const getAuthListService = async ({ name,code,pageNum,pageSize }) => {
+  const result=await query(auth.list({ name,code,pageNum,pageSize }));
+  return result
+}
+
+
 
 
 
@@ -41,5 +54,8 @@ module.exports = {
   addMenuService,
   getMenuCountService,
   editMenuService,
-  delMenuService
+  delMenuService,
+  addAuthService,
+  getAuthCountService,
+  getAuthListService
 }

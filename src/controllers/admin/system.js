@@ -1,9 +1,13 @@
+const crypto = require('crypto')
 const { 
   getMenuAllService,
   addMenuService,
   editMenuService,
   delMenuService,
-  getMenuCountService
+  getMenuCountService,
+  addAuthService,
+  getAuthCountService,
+  getAuthListService
 } = require('../../services/admin/system')
 
 //添加菜单
@@ -81,11 +85,44 @@ const delMenuApi = async (ctx, next) => {
   return next()
 }
 
+//添加权限
+const addAuthApi = async (ctx, next) => {
+  console.log('addMenuApi');
+  try{
+    const { name } = ctx.request.body
+    const randomBytes = crypto.randomBytes(8); // 生成8个字节（64位）的随机数
+    const code = randomBytes.toString('hex');
+    const res = await addAuthService({name,code })
+    ctx.body={}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//或缺权限列表
+const authListApi = async (ctx, next) => {
+  console.log('authListApi');
+  try{
+    const { name,code,pageNum,pageSize } = ctx.request.body
+    const count = await getAuthCountService({name,code})
+    console.log(count)
+    const total = count[0]['COUNT(*)']
+    const list = await getAuthListService({ name,code,pageNum,pageSize })
+    console.log(list)
+    ctx.body={total,list}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
 
 
 module.exports = {
   addMenuApi,
   menuListApi,
   editMenuApi,
-  delMenuApi
+  delMenuApi,
+  addAuthApi,
+  authListApi
 }
