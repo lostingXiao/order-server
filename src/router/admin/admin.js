@@ -1,5 +1,5 @@
 const router = require('koa-router')()
-const { shop,system } = require('../../controllers/admin')
+const { shop,system,auth } = require('../../controllers/admin')
 const { jwtMiddlewareDeal, platformMiddlewareDeal } = require('../../middleware/jwt')
 
 
@@ -9,7 +9,7 @@ const { jwtMiddlewareDeal, platformMiddlewareDeal } = require('../../middleware/
 const service = {
   shop: "/shop",
   system: "/system",
-  banner: "/banner",
+  auth: "/auth",
   order: "/order",
 };
 
@@ -20,7 +20,8 @@ router.get(`${service.system}/menuList`, system.menuListApi);
 router.post(`${service.system}/addMenu`, system.addMenuApi);
 router.post(`${service.system}/editMenu`, system.editMenuApi);
 router.post(`${service.system}/delMenu`, system.delMenuApi);
-
+// auth
+router.post(`${service.auth}/addAuth`, auth.addAuthApi);
 
 
 module.exports = router;

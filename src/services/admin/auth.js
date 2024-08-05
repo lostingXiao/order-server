@@ -1,20 +1,16 @@
 
 const query =require('../../utils/query');
-const { menu }= require('../../models/admin/system')
+const { auth }= require('../../models/admin/auth')
 
 // 获菜单列表
 const getMenuAllService = async () => {
   const result=await query(menu.all());
   return result
 }
-const getMenuCountService = async () => {
-  const result=await query(menu.count());
-  return result
-}
 
 // 添加菜单
 const addMenuService = async ({name,path,parentId}) => {
-  const result=await query(menu.add({ name,path,parentId }));
+  const result=await query(auth.add({ name,path,parentId }));
   return result
 }
 

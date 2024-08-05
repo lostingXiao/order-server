@@ -13,11 +13,9 @@ const addMenuApi = async (ctx, next) => {
     const { name,path,parentId } = ctx.request.body
     const _parentId=parentId||null
     const res = await addMenuService({name,path,parentId:_parentId})
-    console.log('setMenuService----setMenuService')
-    console.log(res)
     ctx.body={}
   }catch(err){
-    ctx.body=err
+    throw err
   }
   return next()
 }
@@ -26,19 +24,31 @@ const addMenuApi = async (ctx, next) => {
 const menuListApi = async (ctx, next) => {
   try{
     const menuList = await getMenuAllService()
-    // const menuCount = await getMenuCountService()
-    console.log('menuListApi----shopList')
-    console.log(menuList)
-    const list=menuList.map(item=>{
-      const { id, name, path, parent_id }=item
-      console.log('menuList.map')
-      console.log(item)
-      return { id, name, path, parent_id }
-    })
+    const sqlList=menuList.map(item=>({
+      title:item.name,
+      name:item.name,
+      id:item.id,
+      key:item.id,
+      path:item.path,
+      parentId:item.parent_id,
+    }))
+    let list=sqlList.filter(item=>!item.parentId)
+    const formatList=(arr)=>{
+      arr.forEach(item=>{
+        const children=sqlList.filter(o=>o.parentId===item.id)
+        if(children.length){
+          item.children=children
+          formatList(children)
+        }
+      })
+    }
+    formatList(list)
+    console.log('menuListApi----list')
     console.log(list)
     ctx.body={list}
   }catch(err){
-    ctx.body=err
+    console.log('menuListApi_______catch(err)')
+    throw err
   }
   return next()
 }
@@ -52,7 +62,7 @@ const editMenuApi = async (ctx, next) => {
     console.log(res)
     ctx.body={}
   }catch(err){
-    ctx.body=err
+    throw err
   }
   return next()
 }
@@ -66,7 +76,7 @@ const delMenuApi = async (ctx, next) => {
     console.log(res)
     ctx.body={}
   }catch(err){
-    ctx.body=err
+    throw err
   }
   return next()
 }

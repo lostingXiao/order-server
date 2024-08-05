@@ -1,6 +1,7 @@
 const CODE = {
   // 普通错误code 均为 -1；前端直接捕获-1的错误 抛出
   success: { code: 0, message: "success", key: "success" },
+  err: { code: -1, message: "err", key: "err" },
   missingParameters: {
     code: -1,
     message: "缺少参数",

@@ -33,10 +33,12 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
+app.use(errorHandler)
+
 // routes
 app.use(router.routes(), router.allowedMethods())
 app.use(responseHandler);
-app.use(errorHandler);
+
 
 // error-handling
 app.on('error', (err, ctx) => {
