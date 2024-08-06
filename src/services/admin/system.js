@@ -1,6 +1,6 @@
 
 const query =require('../../utils/query');
-const { menu, auth }= require('../../models/admin/system')
+const { menu, auth, role, user }= require('../../models/admin/system')
 
 // 获菜单列表
 const getMenuAllService = async () => {
@@ -35,7 +35,7 @@ const addAuthService = async ({name,code }) => {
 }
 
 // 获取权限列表总数
-const getAuthCountService = async ({name,code }) => {
+const getAuthCountService = async ({ name,code }) => {
   const result=await query(auth.count({ name,code }));
   return result
 }
@@ -44,6 +44,49 @@ const getAuthListService = async ({ name,code,pageNum,pageSize }) => {
   const result=await query(auth.list({ name,code,pageNum,pageSize }));
   return result
 }
+//  权限全列表
+const getAuthAllService = async () => {
+  const result=await query(auth.all());
+  return result
+}
+
+// 获取角色列表总数
+const getRoleCountService = async ({ name,keyword }) => {
+  const result=await query(role.count({ name,keyword }));
+  return result
+}
+// 分页获取角色列表
+const getRoleListService = async ({ name,keyword,pageNum,pageSize }) => {
+  const result=await query(role.list({ name,keyword,pageNum,pageSize }));
+  return result
+}
+// 添加角色
+const addRoleService = async ({ name,keyword,permissions,menus }) => {
+  const result=await query(role.add({ name,keyword,permissions,menus }));
+  return result
+}
+//  用户全列表
+const getRoleAllService = async () => {
+  const result=await query(role.all());
+  return result
+}
+
+// 添加用户
+const addUserApiService = async ({ username,password,phone,roleId,shopId }) => {
+  const result=await query(user.add({ username,password,phone,roleId,shopId }));
+  return result
+}
+// 获取用户列表总数
+const getUserCountService = async ({ username,phone }) => {
+  const result=await query(user.count({ username,phone }));
+  return result
+}
+// 分页获取用户列表
+const getUserListService = async ({ username,phone,pageNum,pageSize }) => {
+  const result=await query(user.list({ username,phone,pageNum,pageSize }));
+  return result
+}
+
 
 
 
@@ -57,5 +100,13 @@ module.exports = {
   delMenuService,
   addAuthService,
   getAuthCountService,
-  getAuthListService
+  getAuthListService,
+  getRoleCountService,
+  getRoleListService,
+  addRoleService,
+  getAuthAllService,
+  addUserApiService,
+  getUserCountService,
+  getUserListService,
+  getRoleAllService
 }

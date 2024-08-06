@@ -1,4 +1,5 @@
-const crypto = require('crypto')
+
+const {randomKey}=require('../../utils/util')
 const { 
   getMenuAllService,
   addMenuService,
@@ -7,8 +8,17 @@ const {
   getMenuCountService,
   addAuthService,
   getAuthCountService,
-  getAuthListService
+  getAuthListService,
+  getRoleCountService,
+  getRoleListService,
+  addRoleService,
+  getAuthAllService,
+  addUserApiService,
+  getUserCountService,
+  getUserListService,
+  getRoleAllService
 } = require('../../services/admin/system')
+
 
 //添加菜单
 const addMenuApi = async (ctx, next) => {
@@ -87,11 +97,9 @@ const delMenuApi = async (ctx, next) => {
 
 //添加权限
 const addAuthApi = async (ctx, next) => {
-  console.log('addMenuApi');
   try{
     const { name } = ctx.request.body
-    const randomBytes = crypto.randomBytes(8); // 生成8个字节（64位）的随机数
-    const code = randomBytes.toString('hex');
+    const code = randomKey()
     const res = await addAuthService({name,code })
     ctx.body={}
   }catch(err){
@@ -100,16 +108,93 @@ const addAuthApi = async (ctx, next) => {
   return next()
 }
 
-//或缺权限列表
+//权限列表
 const authListApi = async (ctx, next) => {
   console.log('authListApi');
   try{
     const { name,code,pageNum,pageSize } = ctx.request.body
-    const count = await getAuthCountService({name,code})
-    console.log(count)
+    const count = await getAuthCountService({ name,code })
     const total = count[0]['COUNT(*)']
     const list = await getAuthListService({ name,code,pageNum,pageSize })
-    console.log(list)
+    ctx.body={total,list}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//角色全列表
+const authAllApi = async (ctx, next) => {
+  console.log('authAllApi');
+  try{
+    const list = await getAuthAllService()
+    ctx.body={list}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//角色列表
+const roleListApi = async (ctx, next) => {
+  console.log('roleListApi');
+  try{
+    const { name,keyword,pageNum,pageSize } = ctx.request.body
+    const count = await getRoleCountService({ name,keyword })
+    const total = count[0]['COUNT(*)']
+    const list = await getRoleListService({ name,keyword,pageNum,pageSize })
+    ctx.body={total,list}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//角色新增
+const addRoleApi = async (ctx, next) => {
+  try{
+    const { name,permissions,menus } = ctx.request.body
+    const keyword = randomKey()
+    const res = await addRoleService({name,keyword,permissions,menus })
+    ctx.body={}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//角色全列表
+const roleAllApi = async (ctx, next) => {
+  try{
+    const list = await getRoleAllService()
+    ctx.body={list}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//用户新增
+const addUserApi = async (ctx, next) => {
+  console.log('addUserApi');
+  try{
+    const { username,password,phone,roleId,shopId } = ctx.request.body
+    const res = await addUserApiService({ username,password,phone,roleId:roleId||null,shopId:shopId||null })
+    ctx.body={}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//用户列表
+const userListApi = async (ctx, next) => {
+  console.log('userListApi');
+  try{
+    const { username,phone,pageNum,pageSize } = ctx.request.body
+    const count = await getUserCountService({ username,phone })
+    const total = count[0]['COUNT(*)']
+    const list = await getUserListService({ username,phone,pageNum,pageSize })
     ctx.body={total,list}
   }catch(err){
     throw err
@@ -124,5 +209,12 @@ module.exports = {
   editMenuApi,
   delMenuApi,
   addAuthApi,
-  authListApi
+  authListApi,
+  roleListApi,
+  addRoleApi,
+  authAllApi,
+  addUserApi,
+  userListApi,
+  roleAllApi
+
 }
