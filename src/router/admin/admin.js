@@ -1,20 +1,25 @@
 const router = require('koa-router')()
-const { shop,system } = require('../../controllers/admin')
+const { business,system } = require('../../controllers/admin')
 const { jwtMiddlewareDeal, platformMiddlewareDeal } = require('../../middleware/jwt')
+// const { uploadImgDeal } = require('../../middleware/upload')
 
+// router.use(uploadImgDeal)
 
 // router.use(platformMiddlewareDeal);
 // router.use(jwtMiddlewareDeal);
 
 const service = {
-  shop: "/shop",
+  business: "/business",
   system: "/system",
   auth: "/auth",
   order: "/order",
 };
 
+// business
 // shop
-router.get(`${service.shop}/shopList`, shop.shopListApi)
+router.post(`${service.business}/shopList`, business.shopListApi)
+router.post(`${service.business}/addShop`, business.addShopApi)
+
 // system
 // menu
 router.get(`${service.system}/menuList`, system.menuListApi)

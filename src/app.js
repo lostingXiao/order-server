@@ -3,20 +3,18 @@ const app = new Koa()
 const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const { errorHandler, responseHandler } = require('./middleware/response')
+const { uploadImgDeal } = require('./middleware/upload')
 
 const index = require('./routes/index')
 const router = require('./router/index')
 
-// error handler
 onerror(app)
 
-// middlewares
-app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
-}))
+
+// 使用中间件
+app.use(uploadImgDeal()) //图片文件上传
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
@@ -38,7 +36,6 @@ app.use(errorHandler)
 // routes
 app.use(router.routes(), router.allowedMethods())
 app.use(responseHandler);
-
 
 // error-handling
 app.on('error', (err, ctx) => {

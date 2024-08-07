@@ -1,9 +1,11 @@
-const shop = require ('./shop')
+const business = require ('./business')
 const user = require ('./user')
 const system = require('./system')
+const upload = require('./upload')
 
 module.exports = { 
-  shop,
+  business,
   user,
   system,
+  upload
 }

@@ -1,11 +1,8 @@
 // 环境变量配置
-// import { anyKeyObject } from "../type/global";
+const dotenv = require('dotenv');
+const ENV = process.env.NODE_ENV
 
-const ENV = {
-  development: "development",
-  production: "production",
-};
-
+dotenv.config();
 // mysql配置
 const DATABASE = {
   // 本地环境
@@ -35,8 +32,9 @@ const JWT = {
 
 // 全局参数
 const FIXED_KEY = {
-  port: 3232,
-};
+  port: process.env.PORT,
+  staticDomain:ENV==='development'?`http://localhost:${process.env.PORT}`:`http://www.xiao.com`
+}
 
 module.exports={
   DATABASE,

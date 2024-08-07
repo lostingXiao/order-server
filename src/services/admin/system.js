@@ -7,17 +7,16 @@ const getMenuAllService = async () => {
   const result=await query(menu.all());
   return result
 }
+// 获菜单列表总数
 const getMenuCountService = async () => {
   const result=await query(menu.count());
   return result
 }
-
 // 添加菜单
 const addMenuService = async ({name,path,parentId}) => {
   const result=await query(menu.add({ name,path,parentId }));
   return result
 }
-
 // 编辑菜单
 const editMenuService = async ({name,path,id}) => {
   const result=await query(menu.edit({ name,path,id }));
