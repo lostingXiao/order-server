@@ -18,8 +18,16 @@ const getShopListService = async ({ name,pageNum,pageSize })=>{
   return result
 }
 
+const shopAllService = async ()=>{
+  console.log('shopAllService')
+  const result=await query(shop.all())
+  console.log(result)
+  return result
+}
+
 module.exports = {
   addShopService,
   getShopCountService,
-  getShopListService
+  getShopListService,
+  shopAllService
 }

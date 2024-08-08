@@ -5,7 +5,7 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const logger = require('koa-logger')
 const { errorHandler, responseHandler } = require('./middleware/response')
-const { uploadImgDeal } = require('./middleware/upload')
+const koaBody = require('./middleware/koaBody')
 
 const index = require('./routes/index')
 const router = require('./router/index')
@@ -14,7 +14,7 @@ onerror(app)
 
 
 // 使用中间件
-app.use(uploadImgDeal()) //图片文件上传
+app.use(koaBody()) //请求处理
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))

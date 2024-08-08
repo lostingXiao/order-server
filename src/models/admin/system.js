@@ -84,13 +84,27 @@ const role = {
 const user = {
   all:()=> `SELECT * FROM user`,
   list:({ username,phone,pageNum,pageSize })=>{
-    const base=`SELECT * FROM user `
+    const base=`
+      SELECT 
+        u.id,
+        u.username,
+        u.phone,
+        u.created_at,
+        r.name AS role_name,
+        s.name AS shop_name
+      FROM 
+        user u
+      JOIN 
+        role r ON u.role_id = r.id
+      LEFT JOIN 
+        shop s ON u.shop_id = s.id 
+    `
     const arr=[
-      {key:'username',value:username,type:'like'},
-      {key:'phone',value:phone}
+      {key:'u.username',value:username,type:'like'},
+      {key:'u.phone',value:phone}
     ]
     const psql = formatFilterSql(arr)
-    const page=`ORDER BY updated_at DESC LIMIT ${(pageNum-1)*pageSize},${pageSize}`
+    const page=`ORDER BY u.updated_at DESC LIMIT ${(pageNum-1)*pageSize},${pageSize}`
     const sql = base+psql+page
     return sql
   },
@@ -105,7 +119,7 @@ const user = {
     return sql
   },
   add:({ username,password,phone,roleId,shopId })=>{
-    return `INSERT INTO user ( username, password, phone, role_id, shop_id  ) VALUES ('${username}','${password}','${phone}','${roleId}','${shopId}' )`
+    return `INSERT INTO user ( username, password, phone, role_id, shop_id  ) VALUES ('${username}','${password}','${phone}',${roleId},${shopId} )`
   },
 }
 

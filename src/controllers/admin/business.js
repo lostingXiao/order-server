@@ -1,7 +1,8 @@
 const { 
   addShopService,
   getShopCountService,
-  getShopListService
+  getShopListService,
+  shopAllService
 } = require('../../services/admin/business')
 
 //店铺列表
@@ -21,7 +22,7 @@ const shopListApi = async (ctx, next) => {
   return next()
 }
 
-//添加菜单
+//添加店铺
 const addShopApi = async (ctx, next) => {
   console.log('addShopApi');
   try{
@@ -33,8 +34,22 @@ const addShopApi = async (ctx, next) => {
   }
   return next()
 }
+//店铺总数
+const shopAllApi = async (ctx, next) => {
+  console.log('shopAllApi');
+  try{
+    const list = await shopAllService()
+    ctx.body={list}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+
 
 module.exports = {
   shopListApi,
-  addShopApi
+  addShopApi,
+  shopAllApi
 }

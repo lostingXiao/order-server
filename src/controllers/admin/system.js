@@ -25,8 +25,7 @@ const addMenuApi = async (ctx, next) => {
   console.log('addMenuApi');
   try{
     const { name,path,parentId } = ctx.request.body
-    const _parentId=parentId||null
-    const res = await addMenuService({name,path,parentId:_parentId})
+    const res = await addMenuService({name,path,parentId:parentId||null})
     ctx.body={}
   }catch(err){
     throw err
@@ -179,7 +178,7 @@ const addUserApi = async (ctx, next) => {
   console.log('addUserApi');
   try{
     const { username,password,phone,roleId,shopId } = ctx.request.body
-    const res = await addUserApiService({ username,password,phone,roleId:roleId||null,shopId:shopId||null })
+    const res = await addUserApiService({ username,password,phone,roleId,shopId:shopId||null })
     ctx.body={}
   }catch(err){
     throw err

@@ -19,6 +19,7 @@ const service = {
 // shop
 router.post(`${service.business}/shopList`, business.shopListApi)
 router.post(`${service.business}/addShop`, business.addShopApi)
+router.get(`${service.business}/shopAll`, business.shopAllApi)
 
 // system
 // menu
@@ -38,6 +39,7 @@ router.get(`${service.system}/roleAll`, system.roleAllApi)
 
 // user
 router.post(`${service.system}/userList`, system.userListApi)
+router.post(`${service.system}/addUser`, system.addUserApi)
 
 
 
