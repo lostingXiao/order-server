@@ -1,18 +1,10 @@
 
 const router = require('koa-router')()
-const controllers = require('../../controllers/admin')
-// const { uploadImgDeal } = require('../../middleware/upload')
-
-// router.use(uploadImgDeal)
-
-const service = {
-  user: '/user',
-  upload: '/upload',
-}
+const { public } = require('../../controllers/admin')
 
 // global服务
-router.get(`${service.user}/login`,controllers.user.loginApi)
-router.get(`${service.user}/loginCode`,controllers.user.loginCodeApi)
-router.post(`${service.upload}/img`,controllers.upload.uploadImgApi)
+router.post(`/public/login`,public.loginApi)
+router.get(`/public/loginCode`,public.loginCodeApi)
+router.post(`/public/uploadImg`,public.uploadImgApi)
 
 module.exports=router

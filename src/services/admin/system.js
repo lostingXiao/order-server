@@ -1,6 +1,12 @@
 
-const query =require('../../utils/query');
-const { menu, auth, role, user }= require('../../models/admin/system')
+const query =require('../../utils/query')
+// const { menu, auth, role, user }= require('../../models/admin/system')
+const user = require('../../models/admin/user')
+const menu = require('../../models/admin/menu')
+const auth = require('../../models/admin/auth')
+const role = require('../../models/admin/role')
+
+
 
 // 获菜单列表
 const getMenuAllService = async () => {
@@ -85,11 +91,6 @@ const getUserListService = async ({ username,phone,pageNum,pageSize }) => {
   const result=await query(user.list({ username,phone,pageNum,pageSize }));
   return result
 }
-
-
-
-
-
 
 module.exports = {
   getMenuAllService,

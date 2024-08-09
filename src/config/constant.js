@@ -26,9 +26,10 @@ const DATABASE = {
 
 // jsonwebtoken-jwt配置
 const JWT = {
-  secret: "xxx", //密钥
-  expires: 60 * 60 * 24 * 30, // 30天
-};
+  secret: "123456", //密钥
+  // expires: 60 * 60 * 24 * 30, // 30天
+  expires: 10
+}
 
 // 全局参数
 const FIXED_KEY = {

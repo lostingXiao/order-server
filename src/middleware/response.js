@@ -17,14 +17,15 @@ const responseHandler = (ctx) => {
   }
 };
 
+// err: { code: -1, message: "err", key: "err" },
 // 这个middleware处理在其它middleware中出现的异常,我们在next()后面进行异常捕获，出现异常直接进入这个中间件进行处理
 const errorHandler = async (ctx, next) => {
   return next().catch((err) => {
     if (typeof err === "object") {
       ctx.body = {
-        code: err.code,
+        code: err.code || CODE.err.code,
         data: null,
-        message: err.message,
+        message: err.message || CODE.err.message,
       };
     } else {
       ctx.body = {

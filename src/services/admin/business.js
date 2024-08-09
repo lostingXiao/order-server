@@ -1,5 +1,5 @@
 const query =require('../../utils/query')
-const { shop }= require('../../models/admin/business')
+const shop = require('../../models/admin/shop')
 
 // 添加店铺
 const addShopService = async ({address,contactPerson,contactPhone,description,name,logoUrl}) => {

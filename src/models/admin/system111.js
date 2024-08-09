@@ -83,6 +83,7 @@ const role = {
 
 const user = {
   all:()=> `SELECT * FROM user`,
+  id:({ username,password })=>`SELECT id FROM user WHERE username=${username} AND password=${password}`,
   list:({ username,phone,pageNum,pageSize })=>{
     const base=`
       SELECT 

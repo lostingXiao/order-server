@@ -1,5 +1,5 @@
 
-const JWT = require('../config/constant')
+const { JWT } = require('../config/constant')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
 
@@ -42,6 +42,9 @@ const decodeToken = (token) => {
 
 // 根据userId生成token
 const generatorToken = (userId) => {
+  console.log('------generatorToken-------')
+  console.log(userId)
+  console.log(JWT)
   return jwt.sign({ userId }, JWT.secret, { expiresIn: JWT.expires })
 }
 
