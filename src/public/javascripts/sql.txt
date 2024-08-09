@@ -49,3 +49,7 @@ CREATE TABLE user (
     FOREIGN KEY (role_id) REFERENCES role(id),
     FOREIGN KEY (shop_id) REFERENCES shop(id)
 );
+
+mysqldump -u root -p orders_db > db.sql
+
+mysql -u root -p orders_db < db.sql
