@@ -25,9 +25,25 @@ const shopAllService = async ()=>{
   return result
 }
 
+const shopDetailByIdService = async (id)=>{
+  console.log('shopAllService')
+  const result=await query(shop.detail(id))
+  console.log(result)
+  return result
+}
+
+const editShopByIdService = async ({id,address,contactPerson,contactPhone,description,name,logoUrl})=>{
+  const result=await query(shop.edit({id,address,contactPerson,contactPhone,description,name,logoUrl}))
+  console.log(result)
+  return result
+}
+
+
 module.exports = {
   addShopService,
   getShopCountService,
   getShopListService,
-  shopAllService
+  shopAllService,
+  shopDetailByIdService,
+  editShopByIdService
 }

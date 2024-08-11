@@ -7,11 +7,11 @@ const logger = require('koa-logger')
 const { errorHandler, responseHandler } = require('./middleware/response')
 const koaBody = require('./middleware/koaBody')
 
-const index = require('./routes/index')
-const router = require('./router/index')
+const openRouter = require('./router/open')
+const adminRouter = require('./router/admin')
+const appRouter = require('./router/admin')
 
 onerror(app)
-
 
 // 使用中间件
 app.use(koaBody()) //请求处理
@@ -34,7 +34,13 @@ app.use(async (ctx, next) => {
 app.use(errorHandler)
 
 // routes
-app.use(router.routes(), router.allowedMethods())
+// app.use(router.routes()).use(router.allowedMethods())
+
+app.use(openRouter.routes()).use(openRouter.allowedMethods())
+app.use(adminRouter.routes()).use(adminRouter.allowedMethods())
+app.use(appRouter.routes()).use(appRouter.allowedMethods())
+
+
 app.use(responseHandler);
 
 // error-handling

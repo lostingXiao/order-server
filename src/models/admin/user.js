@@ -45,6 +45,26 @@ const user = {
   add:({ username,password,phone,roleId,shopId })=>{
     return `INSERT INTO user ( username, password, phone, role_id, shop_id  ) VALUES ('${username}','${password}','${phone}',${roleId},${shopId} )`
   },
+  info:(id)=>{
+    const sql=`
+      SELECT 
+        u.username,
+        u.phone,
+        u.shop_id,
+        r.name AS role_name,
+        r.permissions AS role_permissions,
+        s.name AS shop_name,
+        s.logo_url AS shop_logo_url
+      FROM 
+        user u
+      JOIN 
+        role r ON u.role_id = r.id
+      LEFT JOIN 
+        shop s ON u.shop_id = s.id 
+      WHERE u.id = ${id}
+    `
+    return sql
+  }
 }
 
 module.exports = user

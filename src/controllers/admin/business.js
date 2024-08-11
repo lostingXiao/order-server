@@ -2,7 +2,9 @@ const {
   addShopService,
   getShopCountService,
   getShopListService,
-  shopAllService
+  shopAllService,
+  shopDetailByIdService,
+  editShopByIdService
 } = require('../../services/admin/business')
 
 //店铺列表
@@ -46,10 +48,37 @@ const shopAllApi = async (ctx, next) => {
   return next()
 }
 
+//店铺详情
+const shopDetailApi = async (ctx, next) => {
+  try{
+    const { id } = ctx.request.body
+    const list = await shopDetailByIdService(id)
+    ctx.body={ ...list[0] }
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//店铺修改
+const editShopApi = async (ctx, next) => {
+  try{
+    const { id,address,contactPerson,contactPhone,description=null,name,logoUrl } = ctx.request.body
+    await editShopByIdService({id,address,contactPerson,contactPhone,description,name,logoUrl})
+    ctx.body={}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+
 
 
 module.exports = {
   shopListApi,
   addShopApi,
-  shopAllApi
+  shopAllApi,
+  shopDetailApi,
+  editShopApi
 }

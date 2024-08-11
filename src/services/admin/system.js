@@ -92,6 +92,28 @@ const getUserListService = async ({ username,phone,pageNum,pageSize }) => {
   return result
 }
 
+// 获取用户基本信息
+const getUserInfoByIdService = async (id) => {
+  console.log('getUserInfoByIdService')
+  const result=await query(user.info(id))
+  console.log(result)
+  return result
+}
+
+// 获取角色详情
+const getRoleDetaiByIdService = async (id) => {
+  const result=await query(role.id(id))
+  return result
+}
+
+// 编辑角色
+const editRoleByIdService = async ({ id,name,permissions,menus }) => {
+  const result=await query(role.edit({ id,name,permissions,menus }))
+  return result
+}
+
+
+
 module.exports = {
   getMenuAllService,
   addMenuService,
@@ -108,5 +130,8 @@ module.exports = {
   addUserApiService,
   getUserCountService,
   getUserListService,
-  getRoleAllService
+  getRoleAllService,
+  getUserInfoByIdService,
+  getRoleDetaiByIdService,
+  editRoleByIdService
 }

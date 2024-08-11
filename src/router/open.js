@@ -1,6 +1,6 @@
 
 const router = require('koa-router')()
-const { public } = require('../../controllers/admin')
+const { public } = require('../controllers/admin')
 
 // global服务
 router.post(`/public/login`,public.loginApi)

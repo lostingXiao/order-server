@@ -8,11 +8,14 @@ const responseHandler = (ctx) => {
     if (ctx.body === null) {
       ctx.body = null;
     } else {
+      if(ctx.token){
+        ctx.append('Token', ctx.token)
+      }
       ctx.body = {
         code: CODE.success.code,
         data: ctx.body,
         message: CODE.success.message,
-      };
+      }
     }
   }
 };
@@ -36,7 +39,6 @@ const errorHandler = async (ctx, next) => {
     }
     // 保证返回状态是 200
     ctx.status = 200;
-
     return Promise.resolve();
   });
 };

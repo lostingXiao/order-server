@@ -16,7 +16,9 @@ const {
   addUserApiService,
   getUserCountService,
   getUserListService,
-  getRoleAllService
+  getRoleAllService,
+  getRoleDetaiByIdService,
+  editRoleByIdService
 } = require('../../services/admin/system')
 
 
@@ -25,7 +27,7 @@ const addMenuApi = async (ctx, next) => {
   console.log('addMenuApi');
   try{
     const { name,path,parentId } = ctx.request.body
-    const res = await addMenuService({name,path,parentId:parentId||null})
+    await addMenuService({name,path,parentId:parentId||null})
     ctx.body={}
   }catch(err){
     throw err
@@ -56,11 +58,8 @@ const menuListApi = async (ctx, next) => {
       })
     }
     formatList(list)
-    console.log('menuListApi----list')
-    console.log(list)
     ctx.body={list}
   }catch(err){
-    console.log('menuListApi_______catch(err)')
     throw err
   }
   return next()
@@ -71,8 +70,7 @@ const editMenuApi = async (ctx, next) => {
   console.log('editMenuApi');
   try{
     const { name,path,id } = ctx.request.body
-    const res = await editMenuService({name,path,id})
-    console.log(res)
+    await editMenuService({name,path,id})
     ctx.body={}
   }catch(err){
     throw err
@@ -85,8 +83,7 @@ const delMenuApi = async (ctx, next) => {
   console.log('delMenuApi');
   try{
     const { id } = ctx.request.body
-    const res = await delMenuService(id)
-    console.log(res)
+    await delMenuService(id)
     ctx.body={}
   }catch(err){
     throw err
@@ -99,7 +96,7 @@ const addAuthApi = async (ctx, next) => {
   try{
     const { name } = ctx.request.body
     const code = randomKey()
-    const res = await addAuthService({name,code })
+    await addAuthService({name,code })
     ctx.body={}
   }catch(err){
     throw err
@@ -154,7 +151,7 @@ const addRoleApi = async (ctx, next) => {
   try{
     const { name,permissions,menus } = ctx.request.body
     const keyword = randomKey()
-    const res = await addRoleService({name,keyword,permissions,menus })
+    await addRoleService({name,keyword,permissions,menus })
     ctx.body={}
   }catch(err){
     throw err
@@ -178,7 +175,7 @@ const addUserApi = async (ctx, next) => {
   console.log('addUserApi');
   try{
     const { username,password,phone,roleId,shopId } = ctx.request.body
-    const res = await addUserApiService({ username,password,phone,roleId,shopId:shopId||null })
+    await addUserApiService({ username,password,phone,roleId,shopId:shopId||null })
     ctx.body={}
   }catch(err){
     throw err
@@ -201,6 +198,51 @@ const userListApi = async (ctx, next) => {
   return next()
 }
 
+//用户详情
+const getUserInfoApi = async (ctx, next) => {
+  console.log('getUserInfoApi______________________');
+  try{
+    const { userInfo } = ctx
+    userInfo.role_permissions=JSON.parse(userInfo.role_permissions)
+    ctx.body={ ...userInfo }
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//用户详情
+const roleDetailApi = async (ctx, next) => {
+  console.log('roleDetaillApi-------------');
+  try{
+    const { id } = ctx.request.body
+    const list = await getRoleDetaiByIdService(id)
+    const detail = list[0]
+    detail.permissions=JSON.parse(detail.permissions)
+    detail.menus=JSON.parse(detail.menus)
+    ctx.body={ ...detail }
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+//用户详情
+const editRoleApi = async (ctx, next) => {
+  console.log('editRoleApi-------------');
+  try{
+    const { id,name,permissions:pers,menus:mes } = ctx.request.body
+    const permissions=JSON.stringify(pers) 
+    const menus=JSON.stringify(mes) 
+    await editRoleByIdService({ id,name,permissions,menus })
+    ctx.body={}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+
 
 module.exports = {
   addMenuApi,
@@ -214,6 +256,9 @@ module.exports = {
   authAllApi,
   addUserApi,
   userListApi,
-  roleAllApi
+  roleAllApi,
+  getUserInfoApi,
+  roleDetailApi,
+  editRoleApi
 
 }

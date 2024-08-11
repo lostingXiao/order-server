@@ -9,17 +9,14 @@ const { generatorToken } =require('../../utils/util')
 //用户登录
 const loginApi = async (ctx, next) => {
   console.log('loginApi-------------')
-  console.log(ctx.request.body.body)
   try{
-    const { password, username } = ctx.request.body.body || {}
+    const { password, username } = ctx.request.body || {}
     // 获取用户id
     const user = await getUserIdService({ username, password })
-    console.log('userId+++++++++++')
-    console.log(user)
     if(user.length) {
       const userId = user[0].id
       const token = generatorToken(userId)
-      ctx.body = { userId,token }
+      ctx.body = { token }
     } else {
       throw new Error('账号或密码错误')
     }

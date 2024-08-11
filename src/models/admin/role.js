@@ -27,8 +27,9 @@ const role = {
     const sql = base+psql
     return sql
   },
-  // edit:({name,path,id})=> `UPDATE role SET name = '${name}', path = '${path}' WHERE id = ${id}`,
-  // del:(id)=>`DELETE FROM role WHERE id = ${id} OR parent_id = ${id}`
+  id:(id)=> `SELECT * FROM role WHERE id = ${id}`,
+  edit:({ id,name,permissions,menus })=> `UPDATE role SET name = '${name}', permissions = '${permissions}',menus = '${menus}' WHERE id = ${id}`,
+  del:(id)=>`DELETE FROM role WHERE id = ${id} OR parent_id = ${id}`
 }
 
 module.exports = role

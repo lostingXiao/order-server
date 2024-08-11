@@ -32,10 +32,14 @@ const getClientIpAddress = (ctx) => {
 // 通过token解析userId
 
 const decodeToken = (token) => {
-  let jwtInfo = jwt.verify(token, JWT.secret)
+  console.log('decodeToken')
+  console.log(token)
   try {
-    return jwtInfo.userId
+    const jwtInfo = jwt.verify(token, JWT.secret)
+    return jwtInfo
   } catch (err) {
+    console.log('decodeToken-------------err')
+    console.log(err)
     return 'token不合法'
   }
 }
