@@ -1,12 +1,8 @@
 const router = require('koa-router')()
 const { business,system } = require('../controllers/admin')
 const { jwtMiddlewareDeal, platformMiddlewareDeal } = require('../middleware/jwt')
-// const { uploadImgDeal } = require('../../middleware/upload')
-
-// router.use(uploadImgDeal)
-
 // router.use(platformMiddlewareDeal);
-console.log('admin路由配置')
+
 router.use(jwtMiddlewareDeal)
 
 const platform = '/admin'
@@ -18,6 +14,7 @@ const service = {
   order: "/order",
 };
 
+
 // business
 // shop
 router.post(`${platform}${service.business}/shopList`, business.shopListApi)
@@ -25,9 +22,6 @@ router.post(`${platform}${service.business}/addShop`, business.addShopApi)
 router.get(`${platform}${service.business}/shopAll`, business.shopAllApi)
 router.post(`${platform}${service.business}/shopDetail`, business.shopDetailApi)
 router.post(`${platform}${service.business}/editShop`, business.editShopApi)
-
-
-
 
 // system
 // menu
@@ -46,15 +40,14 @@ router.post(`${platform}${service.system}/roleList`, system.roleListApi)
 router.get(`${platform}${service.system}/roleAll`, system.roleAllApi)
 router.post(`${platform}${service.system}/roleDetail`, system.roleDetailApi)
 router.post(`${platform}${service.system}/editRole`, system.editRoleApi)
-
+router.post(`${platform}${service.system}/authorization`, system.authorizationApi)
 
 // user
 router.post(`${platform}${service.system}/userList`, system.userListApi)
 router.post(`${platform}${service.system}/addUser`, system.addUserApi)
 router.post(`${platform}${service.system}/getUserInfo`, system.getUserInfoApi)
-
-
-
+router.post(`${platform}${service.system}/userDetail`, system.userDetailApi)
+router.post(`${platform}${service.system}/editUser`, system.editUserApi)
 
 
 

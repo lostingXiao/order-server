@@ -9,7 +9,7 @@ const koaBody = require('./middleware/koaBody')
 
 const openRouter = require('./router/open')
 const adminRouter = require('./router/admin')
-const appRouter = require('./router/admin')
+const appRouter = require('./router/app')
 
 onerror(app)
 

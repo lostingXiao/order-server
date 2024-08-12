@@ -94,15 +94,13 @@ const getUserListService = async ({ username,phone,pageNum,pageSize }) => {
 
 // 获取用户基本信息
 const getUserInfoByIdService = async (id) => {
-  console.log('getUserInfoByIdService')
   const result=await query(user.info(id))
-  console.log(result)
   return result
 }
 
 // 获取角色详情
 const getRoleDetaiByIdService = async (id) => {
-  const result=await query(role.id(id))
+  const result=await query(role.detail(id))
   return result
 }
 
@@ -111,6 +109,27 @@ const editRoleByIdService = async ({ id,name,permissions,menus }) => {
   const result=await query(role.edit({ id,name,permissions,menus }))
   return result
 }
+// 获取角色权限
+const rolePermissionsByUserIdService = async (id) => {
+  const result=await query(role.permissions(id))
+  return result
+}
+
+// 获取用户详情
+const userDetailByIdService = async (id) => {
+  const result=await query(user.detail(id))
+  return result
+}
+
+// 编辑用户
+const editUserByIdService = async ({ id,username,password,phone,roleId,shopId }) => {
+  const result=await query(user.edit({ id,username,password,phone,roleId,shopId }))
+  return result
+}
+
+
+
+
 
 
 
@@ -133,5 +152,8 @@ module.exports = {
   getRoleAllService,
   getUserInfoByIdService,
   getRoleDetaiByIdService,
-  editRoleByIdService
+  editRoleByIdService,
+  rolePermissionsByUserIdService,
+  userDetailByIdService,
+  editUserByIdService
 }

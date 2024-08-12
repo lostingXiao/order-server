@@ -52,7 +52,6 @@ const user = {
         u.phone,
         u.shop_id,
         r.name AS role_name,
-        r.permissions AS role_permissions,
         s.name AS shop_name,
         s.logo_url AS shop_logo_url
       FROM 
@@ -63,6 +62,23 @@ const user = {
         shop s ON u.shop_id = s.id 
       WHERE u.id = ${id}
     `
+    return sql
+  },
+  detail:(id)=>`SELECT * FROM user WHERE id = ${id}`,
+  edit:({ id,username,password,phone,roleId,shopId })=>{
+    const sql = `
+      UPDATE
+        user 
+      SET 
+        username = '${username}', 
+        password = '${password}', 
+        phone = '${phone}', 
+        role_id = ${roleId}, 
+        shop_id = ${shopId}
+      WHERE
+        id = ${id}
+    `
+    console.log(sql)
     return sql
   }
 }

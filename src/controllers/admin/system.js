@@ -18,7 +18,10 @@ const {
   getUserListService,
   getRoleAllService,
   getRoleDetaiByIdService,
-  editRoleByIdService
+  editRoleByIdService,
+  rolePermissionsByUserIdService,
+  userDetailByIdService,
+  editUserByIdService
 } = require('../../services/admin/system')
 
 
@@ -148,8 +151,11 @@ const roleListApi = async (ctx, next) => {
 
 //角色新增
 const addRoleApi = async (ctx, next) => {
+  console.log('addRoleApi---------------')
   try{
-    const { name,permissions,menus } = ctx.request.body
+    const { name,permissions:pers,menus:mes } = ctx.request.body
+    const permissions=JSON.stringify(pers)
+    const menus=JSON.stringify(mes)
     const keyword = randomKey()
     await addRoleService({name,keyword,permissions,menus })
     ctx.body={}
@@ -174,7 +180,7 @@ const roleAllApi = async (ctx, next) => {
 const addUserApi = async (ctx, next) => {
   console.log('addUserApi');
   try{
-    const { username,password,phone,roleId,shopId } = ctx.request.body
+    const { username,password,phone,roleId,shopId=null } = ctx.request.body
     await addUserApiService({ username,password,phone,roleId,shopId:shopId||null })
     ctx.body={}
   }catch(err){
@@ -200,10 +206,9 @@ const userListApi = async (ctx, next) => {
 
 //用户详情
 const getUserInfoApi = async (ctx, next) => {
-  console.log('getUserInfoApi______________________');
+  console.log('getUserInfoApi-----------------')
   try{
     const { userInfo } = ctx
-    userInfo.role_permissions=JSON.parse(userInfo.role_permissions)
     ctx.body={ ...userInfo }
   }catch(err){
     throw err
@@ -211,9 +216,8 @@ const getUserInfoApi = async (ctx, next) => {
   return next()
 }
 
-//用户详情
+//角色详情
 const roleDetailApi = async (ctx, next) => {
-  console.log('roleDetaillApi-------------');
   try{
     const { id } = ctx.request.body
     const list = await getRoleDetaiByIdService(id)
@@ -227,9 +231,8 @@ const roleDetailApi = async (ctx, next) => {
   return next()
 }
 
-//用户详情
+//编辑角色
 const editRoleApi = async (ctx, next) => {
-  console.log('editRoleApi-------------');
   try{
     const { id,name,permissions:pers,menus:mes } = ctx.request.body
     const permissions=JSON.stringify(pers) 
@@ -242,7 +245,46 @@ const editRoleApi = async (ctx, next) => {
   return next()
 }
 
+//用户授权认证
+const authorizationApi = async (ctx, next) => {
+  try{
+    const userId = ctx.userId
+    const res = await rolePermissionsByUserIdService(userId)
+    const permissions = JSON.parse(res[0].permissions) 
+    const { code } = ctx.request.body
+    const result = permissions.includes(code)
+    console.log('authorizationApi-----res')
+    console.log(result)
+    ctx.body={result}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
 
+const userDetailApi = async (ctx, next) => {
+  try{
+    const { id } = ctx.request.body
+    const res = await userDetailByIdService(id)
+    ctx.body={ ...res[0] }
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+const editUserApi = async (ctx, next) => {
+  console.log('editUserApi-------')
+  try{
+    const { id,username,password,phone,roleId,shopId=null } = ctx.request.body
+    console.log(id,username,password,phone,roleId,shopId)
+    await editUserByIdService({ id,username,password,phone,roleId,shopId })
+    ctx.body={}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
 
 module.exports = {
   addMenuApi,
@@ -259,6 +301,9 @@ module.exports = {
   roleAllApi,
   getUserInfoApi,
   roleDetailApi,
-  editRoleApi
+  editRoleApi,
+  authorizationApi,
+  userDetailApi,
+  editUserApi
 
 }

@@ -12,9 +12,8 @@ const role = {
     const sql = base+psql+page
     return sql
   },
-  add:({ name,keyword,permissions:pers,menus:mes })=>{
-    const permissions=JSON.stringify(pers)
-    const menus=JSON.stringify(mes)
+  add:({ name,keyword,permissions,menus })=>{
+    console.log('role----------------add')
     return `INSERT INTO role ( name, keyword, permissions, menus  ) VALUES ('${name}','${keyword}','${permissions}','${menus}' )`
   },
   count:({name,keyword})=>{
@@ -27,9 +26,21 @@ const role = {
     const sql = base+psql
     return sql
   },
-  id:(id)=> `SELECT * FROM role WHERE id = ${id}`,
+  detail:(id)=> `SELECT * FROM role WHERE id = ${id}`,
   edit:({ id,name,permissions,menus })=> `UPDATE role SET name = '${name}', permissions = '${permissions}',menus = '${menus}' WHERE id = ${id}`,
-  del:(id)=>`DELETE FROM role WHERE id = ${id} OR parent_id = ${id}`
+  del:(id)=>`DELETE FROM role WHERE id = ${id} OR parent_id = ${id}`,
+  permissions:(id)=>{
+    return `
+      SELECT 
+        r.permissions
+      FROM 
+        user u
+      JOIN 
+        role r ON u.role_id = r.id
+      WHERE 
+        u.id = ${id} 
+    `
+  }
 }
 
 module.exports = role
