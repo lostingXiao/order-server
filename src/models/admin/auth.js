@@ -16,8 +16,8 @@ const auth = {
   add:({ name,code })=>{
     return `INSERT INTO auth ( name, code ) VALUES ('${name}','${code}' )`
   },
-  count:({name,code})=>{
-    const base=`SELECT COUNT(*) FROM auth `
+  total:({name,code})=>{
+    const base=`SELECT COUNT(*) AS total FROM auth `
     const arr=[
       {key:'name',value:name,type:'like'},
       {key:'code',value:code}

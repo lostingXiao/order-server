@@ -1,24 +1,26 @@
 const { 
   addShopService,
-  getShopCountService,
+  getShopTotalService,
   getShopListService,
   shopAllService,
   shopDetailByIdService,
-  editShopByIdService
+  editShopByIdService,
+  getGoodsTotalService,
+  getGoodsListService,
+  addGoodsService,
+  goodsDetailService,
+  editGoodsService
 } = require('../../services/admin/business')
 
 //店铺列表
 const shopListApi = async (ctx, next) => {
-  console.log('shopListApi')
   try{
     const { name=null,pageNum,pageSize } = ctx.request.body
-    const count = await getShopCountService({ name })
-    const total = count[0]['COUNT(*)']
+    const res = await getShopTotalService({ name })
+    const { total } = res[0]
     const list = await getShopListService({ name,pageNum,pageSize })
     ctx.body={total,list}
   }catch(err){
-    console.log('shopListApi------------err')
-    console.log(err)
     throw err
   }
   return next()
@@ -26,10 +28,9 @@ const shopListApi = async (ctx, next) => {
 
 //添加店铺
 const addShopApi = async (ctx, next) => {
-  console.log('addShopApi');
   try{
     const { address,contactPerson,contactPhone,description=null,name,logoUrl } = ctx.request.body
-    const res = await addShopService({ address,contactPerson,contactPhone,description,name,logoUrl })
+    await addShopService({ address,contactPerson,contactPhone,description,name,logoUrl })
     ctx.body={}
   }catch(err){
     throw err
@@ -38,7 +39,6 @@ const addShopApi = async (ctx, next) => {
 }
 //店铺总数
 const shopAllApi = async (ctx, next) => {
-  console.log('shopAllApi');
   try{
     const list = await shopAllService()
     ctx.body={list}
@@ -72,6 +72,52 @@ const editShopApi = async (ctx, next) => {
   return next()
 }
 
+//店铺列表
+const goodsListApi = async (ctx, next) => {
+  try{
+    const { name=null,state=null,pageNum,pageSize } = ctx.request.body
+    const res = await getGoodsTotalService({ name,state })
+    const { total } = res[0]
+    const list = await getGoodsListService({ name,state,pageNum,pageSize })
+    ctx.body={total,list}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+const addGoodsApi = async (ctx, next) => {
+  try{
+    const { description=null, shopId=null, img, minQuantity, name, price, state } = ctx.request.body
+    await addGoodsService({ description, shopId, img, minQuantity, name, price, state })
+    ctx.body={}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+const goodsDetailApi = async (ctx, next) => {
+  try{
+    const { id } = ctx.request.body
+    const res = await goodsDetailService(id)
+    ctx.body={ ...res[0] }
+  }catch(err){
+    throw err
+  }
+  return next()
+}
+
+const editGoodsApi = async (ctx, next) => {
+  try{
+    const { id, description=null, shopId=null, img, minQuantity, name, price, state } = ctx.request.body
+    await editGoodsService({ id, description, shopId, img, minQuantity, name, price, state })
+    ctx.body={}
+  }catch(err){
+    throw err
+  }
+  return next()
+}
 
 
 
@@ -80,5 +126,9 @@ module.exports = {
   addShopApi,
   shopAllApi,
   shopDetailApi,
-  editShopApi
+  editShopApi,
+  goodsListApi,
+  addGoodsApi,
+  goodsDetailApi,
+  editGoodsApi
 }

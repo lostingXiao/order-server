@@ -1,5 +1,7 @@
 const query =require('../../utils/query')
 const shop = require('../../models/admin/shop')
+const goods = require('../../models/admin/goods')
+
 
 // 添加店铺
 const addShopService = async ({address,contactPerson,contactPhone,description,name,logoUrl}) => {
@@ -7,43 +9,66 @@ const addShopService = async ({address,contactPerson,contactPhone,description,na
   return result
 }
 
-const getShopCountService = async ({name})=>{
-  console.log('getShopCountService')
-  const result=await query(shop.count({ name }))
+const getShopTotalService = async ({name})=>{
+  const result=await query(shop.total({ name }))
   return result
 } 
 const getShopListService = async ({ name,pageNum,pageSize })=>{
-  console.log('getShopListService')
   const result=await query(shop.list({ name,pageNum,pageSize }))
   return result
 }
 
 const shopAllService = async ()=>{
-  console.log('shopAllService')
   const result=await query(shop.all())
-  console.log(result)
   return result
 }
 
 const shopDetailByIdService = async (id)=>{
-  console.log('shopAllService')
   const result=await query(shop.detail(id))
-  console.log(result)
   return result
 }
 
 const editShopByIdService = async ({id,address,contactPerson,contactPhone,description,name,logoUrl})=>{
   const result=await query(shop.edit({id,address,contactPerson,contactPhone,description,name,logoUrl}))
-  console.log(result)
+  return result
+}
+
+const getGoodsTotalService = async ({ name,state })=>{
+  const result=await query(goods.total({ name,state }))
+  return result
+}
+
+const getGoodsListService = async ({ name,state,pageNum,pageSize })=>{
+  const result=await query(goods.list({ name,state,pageNum,pageSize }))
+  return result
+}
+
+const addGoodsService = async ({ description, shopId, img, minQuantity, name, price, state })=>{
+  const result=await query(goods.add({ description, shopId, img, minQuantity, name, price, state }))
+  return result
+}
+
+const goodsDetailService = async (id)=>{
+  const result=await query(goods.detail(id))
+  return result
+}
+
+const editGoodsService = async ({ id, description, shopId, img, minQuantity, name, price, state })=>{
+  const result=await query(goods.edit({ id, description, shopId, img, minQuantity, name, price, state }))
   return result
 }
 
 
 module.exports = {
   addShopService,
-  getShopCountService,
+  getShopTotalService,
   getShopListService,
   shopAllService,
   shopDetailByIdService,
-  editShopByIdService
+  editShopByIdService,
+  getGoodsTotalService,
+  getGoodsListService,
+  addGoodsService,
+  goodsDetailService, 
+  editGoodsService
 }

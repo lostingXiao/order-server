@@ -13,11 +13,10 @@ const role = {
     return sql
   },
   add:({ name,keyword,permissions,menus })=>{
-    console.log('role----------------add')
     return `INSERT INTO role ( name, keyword, permissions, menus  ) VALUES ('${name}','${keyword}','${permissions}','${menus}' )`
   },
-  count:({name,keyword})=>{
-    const base=`SELECT COUNT(*) FROM role `
+  total:({name,keyword})=>{
+    const base=`SELECT COUNT(*) AS total FROM role `
     const arr=[
       {key:'name',value:name,type:'like'},
       {key:'keyword',value:keyword}

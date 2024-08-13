@@ -14,8 +14,8 @@ const getMenuAllService = async () => {
   return result
 }
 // 获菜单列表总数
-const getMenuCountService = async () => {
-  const result=await query(menu.count());
+const getMenuTotalService = async () => {
+  const result=await query(menu.total());
   return result
 }
 // 添加菜单
@@ -40,8 +40,8 @@ const addAuthService = async ({name,code }) => {
 }
 
 // 获取权限列表总数
-const getAuthCountService = async ({ name,code }) => {
-  const result=await query(auth.count({ name,code }));
+const getAuthTotalService = async ({ name,code }) => {
+  const result=await query(auth.total({ name,code }));
   return result
 }
 // 分页获取权限列表
@@ -56,8 +56,8 @@ const getAuthAllService = async () => {
 }
 
 // 获取角色列表总数
-const getRoleCountService = async ({ name,keyword }) => {
-  const result=await query(role.count({ name,keyword }));
+const getRoleTotalService = async ({ name,keyword }) => {
+  const result=await query(role.total({ name,keyword }));
   return result
 }
 // 分页获取角色列表
@@ -82,8 +82,8 @@ const addUserApiService = async ({ username,password,phone,roleId,shopId }) => {
   return result
 }
 // 获取用户列表总数
-const getUserCountService = async ({ username,phone }) => {
-  const result=await query(user.count({ username,phone }));
+const getUserTotalService = async ({ username,phone }) => {
+  const result=await query(user.total({ username,phone }));
   return result
 }
 // 分页获取用户列表
@@ -130,24 +130,21 @@ const editUserByIdService = async ({ id,username,password,phone,roleId,shopId })
 
 
 
-
-
-
 module.exports = {
   getMenuAllService,
   addMenuService,
-  getMenuCountService,
+  getMenuTotalService,
   editMenuService,
   delMenuService,
   addAuthService,
-  getAuthCountService,
+  getAuthTotalService,
   getAuthListService,
-  getRoleCountService,
+  getRoleTotalService,
   getRoleListService,
   addRoleService,
   getAuthAllService,
   addUserApiService,
-  getUserCountService,
+  getUserTotalService,
   getUserListService,
   getRoleAllService,
   getUserInfoByIdService,

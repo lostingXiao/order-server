@@ -37,7 +37,7 @@ const loginCodeApi = async (ctx, next) => {
   // 获取列表
   // const shopList = await getGroupListService({pageSize, pageNum, name})
 
-  // ctx.body = {count: groupInfo.count, list: groupInfo.rows}
+  // ctx.body = { : groupInfo.total, list: groupInfo.rows}
   ctx.body ={logincode: '12345'}
   return next()
 }

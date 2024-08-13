@@ -5,16 +5,16 @@ const {
   addMenuService,
   editMenuService,
   delMenuService,
-  getMenuCountService,
+  getMenuTotalService,
   addAuthService,
-  getAuthCountService,
+  getAuthTotalService,
   getAuthListService,
-  getRoleCountService,
+  getRoleTotalService,
   getRoleListService,
   addRoleService,
   getAuthAllService,
   addUserApiService,
-  getUserCountService,
+  getUserTotalService,
   getUserListService,
   getRoleAllService,
   getRoleDetaiByIdService,
@@ -112,8 +112,8 @@ const authListApi = async (ctx, next) => {
   console.log('authListApi');
   try{
     const { name,code,pageNum,pageSize } = ctx.request.body
-    const count = await getAuthCountService({ name,code })
-    const total = count[0]['COUNT(*)']
+    const res = await getAuthTotalService({ name,code })
+    const total = res[0].total
     const list = await getAuthListService({ name,code,pageNum,pageSize })
     ctx.body={total,list}
   }catch(err){
@@ -139,8 +139,8 @@ const roleListApi = async (ctx, next) => {
   console.log('roleListApi');
   try{
     const { name,keyword,pageNum,pageSize } = ctx.request.body
-    const count = await getRoleCountService({ name,keyword })
-    const total = count[0]['COUNT(*)']
+    const res = await getRoleTotalService({ name,keyword })
+    const total = res[0].total
     const list = await getRoleListService({ name,keyword,pageNum,pageSize })
     ctx.body={total,list}
   }catch(err){
@@ -194,8 +194,8 @@ const userListApi = async (ctx, next) => {
   console.log('userListApi');
   try{
     const { username,phone,pageNum,pageSize } = ctx.request.body
-    const count = await getUserCountService({ username,phone })
-    const total = count[0]['COUNT(*)']
+    const res = await getUserTotalService({ username,phone })
+    const total = res[0].total
     const list = await getUserListService({ username,phone,pageNum,pageSize })
     ctx.body={total,list}
   }catch(err){

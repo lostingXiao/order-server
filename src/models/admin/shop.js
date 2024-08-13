@@ -13,9 +13,8 @@ const shop = {
     const sql = base+psql+page
     return sql
   },
-  count:({name})=>{
-    console.log('count:({name})=>{')
-    const base=`SELECT COUNT(*) FROM shop `
+  total:({name})=>{
+    const base=`SELECT COUNT(*) AS total FROM shop `
     const arr=[
       {key:'name',value:name,type:'like'},
     ]

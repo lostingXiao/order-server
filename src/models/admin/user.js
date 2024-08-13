@@ -32,8 +32,8 @@ const user = {
     const sql = base+psql+page
     return sql
   },
-  count:({username,phone})=>{
-    const base=`SELECT COUNT(*) FROM user `
+  total:({username,phone})=>{
+    const base=`SELECT COUNT(*) AS total FROM user `
     const arr=[
       {key:'username',value:username,type:'like'},
       {key:'phone',value:phone}

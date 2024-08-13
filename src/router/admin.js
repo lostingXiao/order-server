@@ -10,8 +10,6 @@ const platform = '/admin'
 const service = {
   business: "/business",
   system: "/system",
-  auth: "/auth",
-  order: "/order",
 };
 
 
@@ -22,6 +20,15 @@ router.post(`${platform}${service.business}/addShop`, business.addShopApi)
 router.get(`${platform}${service.business}/shopAll`, business.shopAllApi)
 router.post(`${platform}${service.business}/shopDetail`, business.shopDetailApi)
 router.post(`${platform}${service.business}/editShop`, business.editShopApi)
+
+// goods
+router.post(`${platform}${service.business}/goodsList`, business.goodsListApi)
+router.post(`${platform}${service.business}/addGoods`, business.addGoodsApi)
+router.post(`${platform}${service.business}/goodsDetail`, business.goodsDetailApi)
+router.post(`${platform}${service.business}/editGoods`, business.editGoodsApi)
+
+
+
 
 // system
 // menu
