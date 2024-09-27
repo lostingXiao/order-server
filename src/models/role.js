@@ -1,4 +1,4 @@
-const { formatFilterSql } = require('../../utils/util')
+const { formatFilterSql } = require('../utils/util')
 const role = {
   all:()=> `SELECT * FROM role`,
   list:({name,keyword,pageNum,pageSize})=>{

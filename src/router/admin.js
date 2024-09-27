@@ -1,16 +1,16 @@
 const router = require('koa-router')()
 const { business,system } = require('../controllers/admin')
-const { jwtMiddlewareDeal, platformMiddlewareDeal } = require('../middleware/jwt')
+const { jwtMiddlewareDealAdmin, platformMiddlewareDeal } = require('../middleware/jwt')
 // router.use(platformMiddlewareDeal);
 
-router.use(jwtMiddlewareDeal)
+router.use(jwtMiddlewareDealAdmin)
 
 const platform = '/admin'
 
 const service = {
   business: "/business",
   system: "/system",
-};
+}
 
 
 // business
@@ -26,6 +26,23 @@ router.post(`${platform}${service.business}/goodsList`, business.goodsListApi)
 router.post(`${platform}${service.business}/addGoods`, business.addGoodsApi)
 router.post(`${platform}${service.business}/goodsDetail`, business.goodsDetailApi)
 router.post(`${platform}${service.business}/editGoods`, business.editGoodsApi)
+
+// goods_type
+router.post(`${platform}${service.business}/goodsTypesList`, business.goodsTypesListApi)
+router.post(`${platform}${service.business}/addGoodsType`, business.addGoodsTypeApi)
+router.post(`${platform}${service.business}/goodsTypeDetail`, business.goodsTypeDetailApi)
+router.post(`${platform}${service.business}/editGoodsType`, business.editGoodsTypeApi)
+router.post(`${platform}${service.business}/shopGoodsTypes`, business.shopGoodsTypesApi)
+// tableQrcodes
+router.post(`${platform}${service.business}/addTableQrcode`, business.addTableQrcodeApi)
+router.post(`${platform}${service.business}/tableQrcodesList`, business.tableQrcodesListApi)
+router.post(`${platform}${service.business}/editTableQrcode`, business.editTableQrcodeApi)
+router.post(`${platform}${service.business}/batchTableQrcode`, business.batchTableQrcodeApi)
+router.post(`${platform}${service.business}/tableQrcodeUrl`, business.tableQrcodeUrlApi)
+
+
+
+
 
 
 

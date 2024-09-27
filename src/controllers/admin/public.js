@@ -13,9 +13,9 @@ const loginApi = async (ctx, next) => {
     const { password, username } = ctx.request.body || {}
     // 获取用户id
     const user = await getUserIdService({ username, password })
-    if(user.length) {
-      const userId = user[0].id
-      const token = generatorToken(userId)
+    const userId = user.id
+    if(userId) {
+      const token = generatorToken({userId})
       ctx.body = { token }
     } else {
       throw new Error('账号或密码错误')
@@ -24,8 +24,6 @@ const loginApi = async (ctx, next) => {
     throw err
   }
   return next()
-
-
 }
 
 //用户登录

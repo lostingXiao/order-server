@@ -1,10 +1,8 @@
-const { formatFilterSql } = require('../../utils/util')
+const { formatFilterSql } = require('../utils/util')
 const user = {
   all:()=> `SELECT * FROM user`,
   id:({ username,password })=>{
     const sql = `SELECT id FROM user WHERE username = '${username}' AND password = '${password}' `
-    console.log('sql------------------')
-    console.log(sql)
     return sql
   },
   list:({ username,phone,pageNum,pageSize })=>{
@@ -14,6 +12,7 @@ const user = {
         u.username,
         u.phone,
         u.created_at,
+        u.updated_at,
         r.name AS role_name,
         s.name AS shop_name
       FROM 

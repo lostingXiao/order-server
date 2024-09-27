@@ -5,13 +5,14 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development node bin/www --exec babel-node",
     "dev": "cross-env NODE_ENV=development && ./node_modules/.bin/nodemon bin/www --exec babel-node",
-    "prd": "cross-env NODE_ENV=production && pm2 start bin/www",
+    "prod": "cross-env NODE_ENV=production node bin/www --exec babel-node",
+    "pm2": "cross-env NODE_ENV=production && pm2 start bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
-    "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
     "debug": "^4.1.1",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
@@ -24,6 +25,7 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.0",
+    "koa2-cors": "^2.0.6",
     "mysql": "^2.18.1",
     "nanoid": "^5.0.7",
     "pug": "^2.0.3"

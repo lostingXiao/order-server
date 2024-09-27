@@ -1,5 +1,5 @@
 
-const {randomKey}=require('../../utils/util')
+
 const { 
   getMenuAllService,
   addMenuService,
@@ -41,26 +41,7 @@ const addMenuApi = async (ctx, next) => {
 //菜单列表
 const menuListApi = async (ctx, next) => {
   try{
-    const menuList = await getMenuAllService()
-    const sqlList=menuList.map(item=>({
-      title:item.name,
-      name:item.name,
-      id:item.id,
-      key:item.id,
-      path:item.path,
-      parentId:item.parent_id,
-    }))
-    let list=sqlList.filter(item=>!item.parentId)
-    const formatList=(arr)=>{
-      arr.forEach(item=>{
-        const children=sqlList.filter(o=>o.parentId===item.id)
-        if(children.length){
-          item.children=children
-          formatList(children)
-        }
-      })
-    }
-    formatList(list)
+    const list = await getMenuAllService()
     ctx.body={list}
   }catch(err){
     throw err
@@ -70,7 +51,6 @@ const menuListApi = async (ctx, next) => {
 
 //编辑菜单
 const editMenuApi = async (ctx, next) => {
-  console.log('editMenuApi');
   try{
     const { name,path,id } = ctx.request.body
     await editMenuService({name,path,id})
@@ -83,7 +63,6 @@ const editMenuApi = async (ctx, next) => {
 
 //删除菜单
 const delMenuApi = async (ctx, next) => {
-  console.log('delMenuApi');
   try{
     const { id } = ctx.request.body
     await delMenuService(id)
@@ -98,8 +77,7 @@ const delMenuApi = async (ctx, next) => {
 const addAuthApi = async (ctx, next) => {
   try{
     const { name } = ctx.request.body
-    const code = randomKey()
-    await addAuthService({name,code })
+    await addAuthService({ name })
     ctx.body={}
   }catch(err){
     throw err
@@ -109,11 +87,9 @@ const addAuthApi = async (ctx, next) => {
 
 //权限列表
 const authListApi = async (ctx, next) => {
-  console.log('authListApi');
   try{
     const { name,code,pageNum,pageSize } = ctx.request.body
-    const res = await getAuthTotalService({ name,code })
-    const total = res[0].total
+    const total = await getAuthTotalService({ name,code })
     const list = await getAuthListService({ name,code,pageNum,pageSize })
     ctx.body={total,list}
   }catch(err){
@@ -124,7 +100,6 @@ const authListApi = async (ctx, next) => {
 
 //角色全列表
 const authAllApi = async (ctx, next) => {
-  console.log('authAllApi');
   try{
     const list = await getAuthAllService()
     ctx.body={list}
@@ -136,11 +111,9 @@ const authAllApi = async (ctx, next) => {
 
 //角色列表
 const roleListApi = async (ctx, next) => {
-  console.log('roleListApi');
   try{
     const { name,keyword,pageNum,pageSize } = ctx.request.body
-    const res = await getRoleTotalService({ name,keyword })
-    const total = res[0].total
+    const total = await getRoleTotalService({ name,keyword })
     const list = await getRoleListService({ name,keyword,pageNum,pageSize })
     ctx.body={total,list}
   }catch(err){
@@ -151,7 +124,6 @@ const roleListApi = async (ctx, next) => {
 
 //角色新增
 const addRoleApi = async (ctx, next) => {
-  console.log('addRoleApi---------------')
   try{
     const { name,permissions:pers,menus:mes } = ctx.request.body
     const permissions=JSON.stringify(pers)
@@ -178,7 +150,6 @@ const roleAllApi = async (ctx, next) => {
 
 //用户新增
 const addUserApi = async (ctx, next) => {
-  console.log('addUserApi');
   try{
     const { username,password,phone,roleId,shopId=null } = ctx.request.body
     await addUserApiService({ username,password,phone,roleId,shopId:shopId||null })
@@ -191,11 +162,9 @@ const addUserApi = async (ctx, next) => {
 
 //用户列表
 const userListApi = async (ctx, next) => {
-  console.log('userListApi');
   try{
     const { username,phone,pageNum,pageSize } = ctx.request.body
-    const res = await getUserTotalService({ username,phone })
-    const total = res[0].total
+    const total = await getUserTotalService({ username,phone })
     const list = await getUserListService({ username,phone,pageNum,pageSize })
     ctx.body={total,list}
   }catch(err){
@@ -206,7 +175,6 @@ const userListApi = async (ctx, next) => {
 
 //用户详情
 const getUserInfoApi = async (ctx, next) => {
-  console.log('getUserInfoApi-----------------')
   try{
     const { userInfo } = ctx
     ctx.body={ ...userInfo }
@@ -224,7 +192,7 @@ const roleDetailApi = async (ctx, next) => {
     const detail = list[0]
     detail.permissions=JSON.parse(detail.permissions)
     detail.menus=JSON.parse(detail.menus)
-    ctx.body={ ...detail }
+    ctx.body=detail
   }catch(err){
     throw err
   }
@@ -248,13 +216,9 @@ const editRoleApi = async (ctx, next) => {
 //用户授权认证
 const authorizationApi = async (ctx, next) => {
   try{
-    const userId = ctx.userId
-    const res = await rolePermissionsByUserIdService(userId)
-    const permissions = JSON.parse(res[0].permissions) 
     const { code } = ctx.request.body
-    const result = permissions.includes(code)
-    console.log('authorizationApi-----res')
-    console.log(result)
+    const id = ctx.userId
+    const result = await rolePermissionsByUserIdService({ id,code })
     ctx.body={result}
   }catch(err){
     throw err
@@ -266,7 +230,7 @@ const userDetailApi = async (ctx, next) => {
   try{
     const { id } = ctx.request.body
     const res = await userDetailByIdService(id)
-    ctx.body={ ...res[0] }
+    ctx.body= res
   }catch(err){
     throw err
   }
@@ -274,10 +238,8 @@ const userDetailApi = async (ctx, next) => {
 }
 
 const editUserApi = async (ctx, next) => {
-  console.log('editUserApi-------')
   try{
     const { id,username,password,phone,roleId,shopId=null } = ctx.request.body
-    console.log(id,username,password,phone,roleId,shopId)
     await editUserByIdService({ id,username,password,phone,roleId,shopId })
     ctx.body={}
   }catch(err){

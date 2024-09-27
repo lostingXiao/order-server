@@ -1,44 +1,53 @@
 // 环境变量配置
-const dotenv = require('dotenv');
 const ENV = process.env.NODE_ENV
+const dotenv = require('dotenv')
+dotenv.config({ path: `.env.${ENV}` })
+const serverDomain = process.env.SERVER_DOMAIN
+const appDomain = process.env.APP_DOMAIN
 
-dotenv.config();
+
 // mysql配置
-const DATABASE = {
+const db = ()=> {
   // 本地环境
-  development: {
-    dbName: "xxx",
-    user: "root",
-    password: "xxx",
-    host: "xxx",
-    port: 3306,
-  },
-
-  // 阿里云
-  production: {
-    dbName: "xxx",
-    user: "root",
-    password: "xxx",
-    host: "xxx",
-    port: 3306,
-  },
-};
-
-// jsonwebtoken-jwt配置
-const JWT = {
-  secret: "123456", //密钥
-  expires: 60 * 60 * 24 * 30, // 30天
-  // expires: 10
+  const config = {
+    development: {
+      user:'root',
+      password:'123456',
+      port:3306,
+      host:'localhost',
+      database:'orders_db'
+    },
+    // 云
+    production: {
+      dbName: "xxx",
+      user: "root",
+      password: "xxx",
+      host: "xxx",
+      port: 3306,
+    }
+  }
+  return config[ENV]
 }
+
+const DATABASE = db()
+
+const SECRET = {
+  key: 'TXRZ3jThBP2dWnUN', //密钥
+  expires: 60 * 60 * 24 * 30, // 有效期 秒为单位
+  iv: '2Mr9ca8KFEdAFGua',
+}
+
+
 
 // 全局参数
 const FIXED_KEY = {
   port: process.env.PORT,
-  staticDomain:ENV==='development'?`http://localhost:${process.env.PORT}`:`http://www.xiao.com`
+  serverDomain,
+  appDomain
 }
 
 module.exports={
   DATABASE,
-  JWT,
+  SECRET,
   FIXED_KEY,
 }

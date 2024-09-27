@@ -1,4 +1,4 @@
-const { formatFilterSql } = require('../../utils/util')
+const { formatFilterSql } = require('../utils/util')
 
 const auth = {
   all:()=> `SELECT * FROM auth`,

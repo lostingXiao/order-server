@@ -1,4 +1,4 @@
-const { formatFilterSql } = require('../../utils/util')
+const { formatFilterSql } = require('../utils/util')
 
 const shop = {
   all:()=> `SELECT * FROM shop`,
@@ -23,18 +23,20 @@ const shop = {
     return sql
   },
   add:({ address,contactPerson,contactPhone,description,name,logoUrl })=>{
+    const _description = description ? `'${description}'` : null
     return `INSERT INTO shop 
       ( address, contact_Person, contact_Phone, description, name, logo_Url  ) 
       VALUES 
-      ('${address}','${contactPerson}','${contactPhone}','${description}','${name}','${logoUrl}' )`
+      ('${address}','${contactPerson}','${contactPhone}',${_description},'${name}','${logoUrl}' )`
   },
   detail:(id)=>`SELECT * FROM shop WHERE id=${id}`,
   edit:({id,address,contactPerson,contactPhone,description,name,logoUrl})=>{
+    const _description = description ? `'${description}'` : null
     return `UPDATE shop SET 
       address='${address}',
       contact_Person='${contactPerson}',
       contact_Phone='${contactPhone}',
-      description='${description}',
+      description=${_description},
       name='${name}',
       logo_Url='${logoUrl}' 
       WHERE 

@@ -1,22 +1,20 @@
 //接收上传的excel文件，保存解析返回objects
-const path = require('path');
 const user = require('../../models/user')
 const query =require('../../utils/query')
 
-const uploadImgService = async (file)=>{
-    const basename = path.basename(file.filepath);
-    const url = `/images/${basename}`
-    return url
-}
-
-// 分页获取用户列表
+// 获取用户id
 const getUserIdService = async ({ username, password }) => {
     const list=await query(user.id({ username, password }))
     const result=list[0]
     return result
 }
+// 获取餐桌id
+const getTableIdService = async ( code ) => {
+    const result = decrypt(code)
+    return parseInt(result)
+}
 
 module.exports =  {
-    uploadImgService,
-    getUserIdService
+    getUserIdService,
+    getTableIdService
 }
