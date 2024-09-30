@@ -1,6 +1,8 @@
 //接收上传的excel文件，保存解析返回objects
-const user = require('../../models/user')
 const query =require('../../utils/query')
+const user = require('../../models/user')
+const { encrypt,decrypt } = require('../../utils/util')
+
 
 // 获取用户id
 const getUserIdService = async ({ username, password }) => {

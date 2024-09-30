@@ -8,7 +8,6 @@ const { generatorToken } =require('../../utils/util')
 
 //用户登录
 const loginApi = async (ctx, next) => {
-  console.log('loginApi-------------')
   try{
     const { password, username } = ctx.request.body || {}
     // 获取用户id

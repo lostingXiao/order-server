@@ -8,8 +8,8 @@ router.use(jwtMiddlewareDealAdmin)
 const platform = '/admin'
 
 const service = {
-  business: "/business",
-  system: "/system",
+  business: '/business',
+  system: '/system',
 }
 
 

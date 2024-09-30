@@ -9,7 +9,7 @@ const uploadImgService = async (file)=>{
     return url
 }
 
-// 分页获取用户列表
+//获取用户列表
 const getUserIdService = async ({ username, password }) => {
     const list=await query(user.id({ username, password }))
     const result=list[0]

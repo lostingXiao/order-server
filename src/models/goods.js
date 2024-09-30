@@ -51,7 +51,7 @@ const sql = {
     const _description = description ? `'${description}'` : null
     return `
       INSERT INTO 
-        goods ( description, shop_id, type_id, img, min_quantity, name, price, state ) 
+        ${baseTable} ( description, shop_id, type_id, img, min_quantity, name, price, state ) 
       VALUES 
         (
           ${_description}, 
@@ -69,7 +69,7 @@ const sql = {
   edit:({ id, description, shopId, typeId, img, minQuantity, name, price, state })=>{
     const _description = description ? `'${description}'` : null
     return `
-      UPDATE goods SET 
+      UPDATE ${baseTable} SET 
         description = ${_description}, 
         shop_id = ${shopId}, 
         type_id = ${typeId}, 
@@ -81,12 +81,12 @@ const sql = {
       WHERE 
         id = ${id}
     `
-  },
-  listByTableId: (tableId) => {
-    return `SELECT * FROM ${baseTable} WHERE table_id = ${tableId}`
   }
 }
 
 module.exports = sql
+
+
+
 
 

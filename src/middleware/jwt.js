@@ -2,7 +2,9 @@ const CODE = require('../config/code')
 const {decodeToken} = require('../utils/util')
 const PLATFORM = require('../config/constant')
 const { getUserInfoByIdService: getAdminUserInfoByIdService } = require('../services/admin/system')
-const { getUserInfoByIdService: getAppUserInfoByIdService } = require('../services/app/business')
+const { getUserInfoByIdService: getAppUserInfoByIdService } = require('../services/app/system')
+
+console.log(getAppUserInfoByIdService)
 
 
 const jwtMiddlewareDealAdmin = async (ctx, next) => {
@@ -34,20 +36,25 @@ const jwtMiddlewareDealApp = async (ctx, next) => {
   const token = ctx.request.headers.token
   if (typeof token === "string") {
     try {
-      const decodeMgs = decodeToken(token)
+      const  decodeMgs = decodeToken(token)
       const { userId, tableId } = decodeMgs
-      if(!userId && !tableId ){
+      if( userId==='' && tableId==='' ){
         throw new Error('token不合法')
       }
-      const userInfo = await getAppUserInfoByIdService(userId)
-      if (!userInfo) {
-        throw CODE.tokenFailed
-      } else {
-        ctx.userId = Number(userId)
-        ctx.tableId = Number(tableId)
-        ctx.userInfo = userInfo
-      }
+      console.log('getAppUserInfoByIdService')
+      const { userInfo } = await getAppUserInfoByIdService({userId,tableId})
+      console.log('getAppUserInfoByIdService----------userInfo')
+      console.log(userInfo)
+      ctx.userId = Number(userId)
+      ctx.tableId = Number(tableId)
+      ctx.userInfo = userInfo
+      console.log('ctx')
+      console.log(ctx.userId)
+      console.log(ctx.tableId)
+      console.log(ctx.userInfo)
     } catch (error) {
+      console.log('catch (error)')
+      console.log(error)
       throw error
     }
   } else {

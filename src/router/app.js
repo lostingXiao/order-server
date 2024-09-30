@@ -3,9 +3,7 @@ const { order } = require('../controllers/app')
 const { jwtMiddlewareDealApp, platformMiddlewareDeal } = require('../middleware/jwt')
 
 router.use(jwtMiddlewareDealApp)
-
-// router.use(platformMiddlewareDeal);
-console.log('app路由配置')
+console.log('app服务-----')
 
 const platform = '/app'
 
@@ -14,9 +12,18 @@ const service = {
   order: '/order',
 }
 
-// order
-router.post(`${platform}${service.order}/goodsList`, order.goodsListApi)
+// app/order/test
 
+// order
+// router.post(`${platform}${service.order}/goodsList`, order.goodsListApi)
+// router.post(`${platform}${service.order}/shopList`, business.shopListApi)
+router.post(`${platform}${service.order}/goodsList`, order.goodsListApi)
+router.get(`${platform}${service.order}/test`, async (ctx, next) => {
+  ctx.body ={logincode: '1112121212121212'}
+  return next()
+})
+
+console.log('router----')
 
 
 module.exports = router

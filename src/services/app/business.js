@@ -1,3 +1,4 @@
+const query =require('../../utils/query')
 const user = require('../../models/user')
 // 获取店铺商家基本信息
 const getUserInfoByIdService = async (id) => {
