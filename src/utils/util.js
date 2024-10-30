@@ -81,10 +81,35 @@ const encrypt = (message) => {
 }
 // 解密
 const decrypt = (message) => {
-  // 解密
   var decrypted = CryptoJS.AES.decrypt(message, encKey, { iv: encIv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 })
   var decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
   return decryptedStr
+}
+
+// 格式化订单数据
+const orderFormat = (list,tableId) => {
+  let quantity=0
+  let amount=0
+  list.forEach(item=>{
+    const itemAmount = item.amount || item.price * item.quantity
+    quantity+=item.quantity
+    amount+=itemAmount
+  })
+  return { tableQrcodeId:tableId, status:0, quantity, amount }
+}
+
+//合并重复商品
+const removeRedundantByGoodsId = (arr)=> {
+  const map = new Map()
+  arr.forEach(item => {
+    const key = item.goods_id
+    if (map.has(key)) {
+      map.get(key).quantity += 1
+    } else {
+      map.set(key, { quantity:1, ...item })
+    }
+  })
+  return Array.from(map.values())
 }
 
 module.exports={
@@ -95,5 +120,7 @@ module.exports={
   formatFilterSql,
   randomKey,
   encrypt,
-  decrypt
+  decrypt,
+  orderFormat,
+  removeRedundantByGoodsId
 }

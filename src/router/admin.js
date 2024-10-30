@@ -1,9 +1,8 @@
 const router = require('koa-router')()
 const { business,system } = require('../controllers/admin')
-const { jwtMiddlewareDealAdmin, platformMiddlewareDeal } = require('../middleware/jwt')
-// router.use(platformMiddlewareDeal);
+const { jwtMiddlewareDealHttp, platformMiddlewareDeal } = require('../middleware/jwt')
 
-router.use(jwtMiddlewareDealAdmin)
+router.use(jwtMiddlewareDealHttp)
 
 const platform = '/admin'
 

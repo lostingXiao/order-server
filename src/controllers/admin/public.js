@@ -12,6 +12,7 @@ const loginApi = async (ctx, next) => {
     const { password, username } = ctx.request.body || {}
     // 获取用户id
     const user = await getUserIdService({ username, password })
+    console.log(user)
     const userId = user.id
     if(userId) {
       const token = generatorToken({userId})

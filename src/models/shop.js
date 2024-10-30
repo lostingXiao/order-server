@@ -3,7 +3,6 @@ const { formatFilterSql } = require('../utils/util')
 const shop = {
   all:()=> `SELECT * FROM shop`,
   list:({ name,pageNum,pageSize })=>{
-    console.log('list:({ name,pageNum,pageSize })')
     const base=`SELECT * FROM shop `
     const arr=[
       {key:'name',value:name,type:'like'},

@@ -110,7 +110,6 @@ const addTableQrcodeService = async ({ name, shopId, qrCodeBgColor, qrCodeColor,
 }
 const tableQrcodesListService = async ({ shopId })=>{
   const list=await query(tableQrcode.listByShopId({ shopId }))
-  console.log()
   const result = list.map(item=>({...item,content:encrypt(item.id)}))
   return result
 }

@@ -18,7 +18,4 @@ router.post(`${platform}${service.admin}/uploadImg`,adminPublic.uploadImgApi)
 // webapp 用户端
 router.post(`${platform}${service.app}/login`,appPublic.loginApi)
 
-console.log('public====router')
-console.log(router)
-
 module.exports=router

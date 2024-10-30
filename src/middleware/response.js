@@ -40,8 +40,8 @@ const errorHandler = async (ctx, next) => {
     // 保证返回状态是 200
     ctx.status = 200;
     return Promise.resolve();
-  });
-};
+  })
+}
 
 module.exports={
   responseHandler,

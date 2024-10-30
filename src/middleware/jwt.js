@@ -1,26 +1,25 @@
 const CODE = require('../config/code')
-const {decodeToken} = require('../utils/util')
+const { decodeToken, decrypt } = require('../utils/util')
 const PLATFORM = require('../config/constant')
-const { getUserInfoByIdService: getAdminUserInfoByIdService } = require('../services/admin/system')
-const { getUserInfoByIdService: getAppUserInfoByIdService } = require('../services/app/system')
-
-console.log(getAppUserInfoByIdService)
+const { getUserInfoByIdService } = require('../services/public/index')
+// const { getUserInfoByIdService: getAppUserInfoByIdService } = require('../services/app/system')
 
 
-const jwtMiddlewareDealAdmin = async (ctx, next) => {
+const jwtMiddlewareDealHttp = async (ctx, next) => {
   const token = ctx.request.headers.token
   if (typeof token === "string") {
     try {
       const  decodeMgs = decodeToken(token)
-      const { userId } = decodeMgs
-      if(!userId){
+      const { userId, tableId } = decodeMgs
+      if(!userId && !tableId){
         throw new Error('token不合法')
       }
-      const userInfo = await getAdminUserInfoByIdService(userId)
+      const { userInfo } = await getUserInfoByIdService({userId,tableId})
       if (!userInfo) {
         throw CODE.tokenFailed
       } else {
         ctx.userId = Number(userId)
+        ctx.tableId = Number(tableId)
         ctx.userInfo = userInfo
       }
     } catch (error) {
@@ -32,33 +31,22 @@ const jwtMiddlewareDealAdmin = async (ctx, next) => {
   return next()
 }
 
-const jwtMiddlewareDealApp = async (ctx, next) => {
-  const token = ctx.request.headers.token
-  if (typeof token === "string") {
+const jwtMiddlewareDealSocket = async (socket, next) => {
+  console.log('jwtMiddlewareDealSocket')
+  const code = socket.handshake.auth.code
+  console.log(code)
+  if (typeof code === 'string') {
     try {
-      const  decodeMgs = decodeToken(token)
-      const { userId, tableId } = decodeMgs
-      if( userId==='' && tableId==='' ){
-        throw new Error('token不合法')
-      }
-      console.log('getAppUserInfoByIdService')
-      const { userInfo } = await getAppUserInfoByIdService({userId,tableId})
-      console.log('getAppUserInfoByIdService----------userInfo')
-      console.log(userInfo)
-      ctx.userId = Number(userId)
-      ctx.tableId = Number(tableId)
-      ctx.userInfo = userInfo
-      console.log('ctx')
-      console.log(ctx.userId)
-      console.log(ctx.tableId)
-      console.log(ctx.userInfo)
+      const tableId = decrypt(code)
+      console.log(tableId)
+      if( !tableId ) socket.disconnect()
+      await getUserInfoByIdService({tableId})
+      socket.tableId = tableId
     } catch (error) {
-      console.log('catch (error)')
-      console.log(error)
-      throw error
+      socket.disconnect()
     }
   } else {
-    throw CODE.tokenFailed
+    socket.disconnect()
   }
   return next()
 }
@@ -75,7 +63,7 @@ const platformMiddlewareDeal = async (ctx, next) => {
 };
 
 module.exports = {
-  jwtMiddlewareDealAdmin,
-  jwtMiddlewareDealApp,
+  jwtMiddlewareDealHttp,
+  jwtMiddlewareDealSocket,
   platformMiddlewareDeal
 }

@@ -246,12 +246,6 @@ const tableQrcodeUrlApi = async (ctx, next) => {
   return next()
 }
 
-
-
-
-
-
-
 module.exports = {
   shopListApi,
   addShopApi,
